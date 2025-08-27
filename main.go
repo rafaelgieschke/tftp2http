@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/pin/tftp/v3"
 )
@@ -20,6 +21,8 @@ func main() {
 func readHandler(filename string, rf io.ReaderFrom) error {
 	err := func() error {
 		log.Printf("Received TFTP request for: %q\n", filename)
+
+		filename = strings.TrimPrefix(filename, ":")
 
 		resp, err := http.Get(filename)
 		if err != nil {
