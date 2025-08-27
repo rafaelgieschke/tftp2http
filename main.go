@@ -34,6 +34,7 @@ func readHandler(filename string, rf io.ReaderFrom) error {
 			return fmt.Errorf("HTTP GET %q failed with status: %q", filename, resp.Status)
 		}
 
+		rf.(tftp.OutgoingTransfer).SetSize(resp.ContentLength)
 		n, err := rf.ReadFrom(resp.Body)
 		if err != nil {
 			return fmt.Errorf("Error sending data to TFTP client: %w\n", err)
