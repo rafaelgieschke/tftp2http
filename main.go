@@ -24,6 +24,12 @@ func readHandler(filename string, rf io.ReaderFrom) error {
 
 		filename = strings.TrimPrefix(filename, ":")
 
+		head, err := http.Head(filename)
+		if err != nil {
+			return fmt.Errorf("HTTP HEAD %q failed: %w\n", filename, err)
+		}
+		head.Body.Close()
+
 		resp, err := http.Get(filename)
 		if err != nil {
 			return fmt.Errorf("HTTP GET %q failed: %w\n", filename, err)
@@ -34,7 +40,7 @@ func readHandler(filename string, rf io.ReaderFrom) error {
 			return fmt.Errorf("HTTP GET %q failed with status: %q", filename, resp.Status)
 		}
 
-		rf.(tftp.OutgoingTransfer).SetSize(resp.ContentLength)
+		rf.(tftp.OutgoingTransfer).SetSize(head.ContentLength)
 		n, err := rf.ReadFrom(resp.Body)
 		if err != nil {
 			return fmt.Errorf("Error sending data to TFTP client: %w\n", err)
