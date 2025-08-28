@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@HEAD
+      - run: |
+          docker login -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}} ghcr.io/${{github.repository}}
+          docker build -t ghcr.io/${{github.repository}} .
+          docker push ghcr.io/${{github.repository}}
