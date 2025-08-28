@@ -1,0 +1,7 @@
+[Service]
+WorkingDirectory=%Y
+ExecStart=go run .
+Environment=HOME=%Y
+
+[Install]
+WantedBy=multi-user.target
