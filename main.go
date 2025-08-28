@@ -6,12 +6,15 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/pin/tftp/v3"
 )
 
 func main() {
 	s := tftp.NewServer(readHandler, nil)
+	s.SetTimeout(1 * time.Second)
+	s.EnableSinglePort()
 	err := s.ListenAndServe(":69")
 	if err != nil {
 		log.Fatal(err)
