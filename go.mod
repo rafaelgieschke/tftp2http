@@ -1,4 +1,4 @@
-module tftp2http
+module github.com/rafaelgieschke/tftp2http
 
 go 1.19
 
